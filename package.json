@@ -1,0 +1,24 @@
+{
+  "name": "dog_nutrition_plus",
+  "version": "1.0.0",
+  "description": "This is the dog nutrition + project!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aggie-coding-club/Dog_Nutrition_Plus.git"
+  },
+  "author": "Dog Nutrition + Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aggie-coding-club/Dog_Nutrition_Plus/issues"
+  },
+  "homepage": "https://github.com/aggie-coding-club/Dog_Nutrition_Plus#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "mongoose": "^5.3.0"
+  }
+}
