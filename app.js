@@ -3,7 +3,7 @@ var express = require("express"),
 
 //Landing page
 app.get("/",function(req, res){
-    res.send("This is the landing page!!!");
+    res.render("landing.ejs");
 });
 
 
