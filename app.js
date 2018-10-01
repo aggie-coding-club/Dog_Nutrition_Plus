@@ -1,5 +1,6 @@
 var express = require("express"),
-    app = express();
+    app = express(),
+    mongoose = require("mongoose");
 
 //Landing page
 app.get("/",function(req, res){
