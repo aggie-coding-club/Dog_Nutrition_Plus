@@ -1,3 +1,5 @@
 # Dog_Nutrition_Plus
 
-Welcome to the readme! There is quite a bit more to do here, so yeah.
+Welcome to the readme!
+
+***Please use npm install in your console to get the required node modules.
