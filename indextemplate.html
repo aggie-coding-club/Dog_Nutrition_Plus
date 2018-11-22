@@ -6,21 +6,15 @@
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-    <div class="ui bottom attached segment pushable">
-      <div class="ui visible inverted left vertical sidebar menu">
-        <div class="ui container segment">
-            <h1>DogNutri+</h1>
-        </div>
-        <a class="item" href="recipestemplate.html">
-          Recipes
-        </a>
-        <a class="item">
-          Page 2
-        </a>
-        <a class="item">
-          Page 3
-        </a>
-      </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <!--sidebar-->
+    <div id="nav-placeholder"></div>
+    <script>
+    $(function(){
+      $("#nav-placeholder").load("navigation.html");
+    });
+    </script>
+    <!--end of sidebar-->
       <div class="pusher">
         Dog Nutri Website Content
       </div>
