@@ -8,9 +8,10 @@ var bodyParser = require("body-parser"),
 mongoose.connect("mongodb://" + monConnect.username + ":" + monConnect.pass + "@ds055545.mlab.com:55545/dog-nutrition-plus");
 
 app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "views/landing.html"));
+    res.sendFile(path.join(__dirname, "views/indextemplate.html"));
 });
 
-app.listen(3000, function(req, res){
-    console.log("The server is running on port 3000!");
+var PORT = 4000;
+app.listen(PORT, function(req, res){
+    console.log("The server is running on port " + PORT + "!");
 });
