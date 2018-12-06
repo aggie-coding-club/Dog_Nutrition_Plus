@@ -5,6 +5,10 @@ var bodyParser = require("body-parser"),
     monConnect = require("./config.js"),
     app = express();
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Index from '/views/react-modules/indextemplate';
+
 mongoose.connect("mongodb://" + monConnect.username + ":" + monConnect.pass + "@ds055545.mlab.com:55545/dog-nutrition-plus");
 
 app.get("/", function(req, res){
