@@ -5,14 +5,36 @@ var bodyParser = require("body-parser"),
     monConnect = require("./config.js"),
     app = express();
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Index from '/views/react-modules/indextemplate';
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.set('view engine', 'ejs');
 
 mongoose.connect("mongodb://" + monConnect.username + ":" + monConnect.pass + "@ds055545.mlab.com:55545/dog-nutrition-plus");
 
+var obj = {
+    fname: "Jason",
+    lname: "Kirk",
+    id: 1
+};
+
 app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "views/indextemplate.html"));
+    // res.sendFile(path.join(__dirname, "views/indextemplate.html"));
+    res.render('landing', obj);
+});
+
+app.get("/query", function(req, res){
+    res.render('landing', obj);
+});
+
+app.post("/query", function(req, res){
+    var fname = req.body.firstname;
+    var lname = req.body.lastname
+
+    console.log(fname + ' ' + lname);
+    obj.fname = fname;
+    obj.lname = lname;
+
+    res.redirect("/");
 });
 
 var PORT = 4000;
