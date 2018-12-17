@@ -18,7 +18,6 @@ var obj = {
 };
 
 app.get("/", function(req, res){
-    // res.sendFile(path.join(__dirname, "views/indextemplate.html"));
     res.render('landing', obj);
 });
 
