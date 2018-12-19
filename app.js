@@ -5,6 +5,20 @@ var bodyParser = require("body-parser"),
     monConnect = require("./config.js"),
     app = express();
 
+// Import mongodb models
+var data_src_link = require('./models/data_src_link.js'),
+    data_src = require('./models/data_src.js'),
+    deriv_cd = require('./models/deriv_cd.js'),
+    fd_group = require('./models/fd_group.js'),
+    food_des = require('./models/food_des.js'),
+    footnote = require('./models/footnote.js'),
+    langdesc = require('./models/langdesc.js'),
+    langual = require('./models/langual.js'),
+    nut_data = require('./models/nut_data.js'),
+    nutr_def = require('./models/nutr_def.js'),
+    src_cd = require('./models/src_cd.js'),
+    weight = require('./models/weight.js');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
@@ -22,6 +36,7 @@ app.get("/", function(req, res){
 });
 
 app.get("/query", function(req, res){
+
     res.render('landing', obj);
 });
 
