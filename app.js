@@ -85,7 +85,31 @@ app.get("/datasearch/desc/:name", function(req, res){
         if(err){
             console.log(err);
         } else if(docs.length != 0){
-            docs.sort();
+            docs.sort(function(a, b){
+                var countA = 0;
+                var countB = 0;
+                for (var i = 0; i < a.Shrt_Desc.length - shrtname.length; i++){
+                    if (a.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()){
+                        countA++;
+                    } else{
+                        break;
+                    }
+                }
+                for (var i = 0; i < b.Shrt_Desc.length - shrtname.length; i++) {
+                    if (b.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
+                        countB++;
+                        // console.log(b.Shrt_Desc.substring(i, i + shrtname.length));
+                    } else{
+                        // console.log("The else statement occurs");
+                        break;
+                    }
+                }
+                if(countA == countB){
+                    return a - b;
+                }
+                return countA - countB;
+
+            });
             res.render("dataresults", {docs: docs});
         } else{
             res.render("datasearch");
