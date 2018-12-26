@@ -5,7 +5,7 @@ var bodyParser = require("body-parser"),
     monConnect = require("./config.js"),
     app = express();
 
-// Import mongodb models
+// Import mongooose models
 var data_src_link = require('./models/data_src_link.js'),
     data_src = require('./models/data_src.js'),
     deriv_cd = require('./models/deriv_cd.js'),
@@ -19,6 +19,7 @@ var data_src_link = require('./models/data_src_link.js'),
     src_cd = require('./models/src_cd.js'),
     weight = require('./models/weight.js');
 
+// Set up express usage
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('views'));
@@ -79,7 +80,6 @@ app.get("/datasearch/NBD/:id", function(req, res){
 
 app.get("/datasearch/desc/:name", function(req, res){
     var shrtname = req.params.name;
-    console.log(shrtname);
     var query = food_des.find({ "Shrt_Desc": { "$regex": shrtname, "$options": "$i"}});
     query.exec(function(err, docs){
         if(err){
@@ -98,9 +98,7 @@ app.get("/datasearch/desc/:name", function(req, res){
                 for (var i = 0; i < b.Shrt_Desc.length - shrtname.length; i++) {
                     if (b.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
                         countB++;
-                        // console.log(b.Shrt_Desc.substring(i, i + shrtname.length));
                     } else{
-                        // console.log("The else statement occurs");
                         break;
                     }
                 }
