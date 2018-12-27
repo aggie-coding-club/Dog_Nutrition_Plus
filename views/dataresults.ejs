@@ -1,11 +1,11 @@
 <% include ./partials/header %>
 
     <% docs.forEach(function(item){ %>
-        <div class="ui divider"></div>
         <div>
-            <%= item.Shrt_Desc %>
-            <a href="/datasearch/NDB/<%= item.NDB_No %>">Details</a>
+            <div><%= item.Shrt_Desc %></div>
+            <a class="ui button blue small" href="/datasearch/NDB/<%= item.NDB_No %>">Details</a>
         </div>
+        <div class="ui divider"></div>
     <% }); %>
     
 </body>

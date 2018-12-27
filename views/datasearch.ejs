@@ -1,16 +1,22 @@
 <% include ./partials/header %>
-    
-    <form action="/datasearch" method="POST">
-        <div class="ui input">
-            <input id="test" type="text" placeholder="NDB_No" name="NDB_No" >
-        </div>
-        <div class="ui input">
-            <input type="text" placeholder="Name" name="Shrt_Desc">
-        </div>
-        <input class="ui green button" type="submit" value="Submit">
-    </form>
 
-    <!-- User scripts -->
-    <script type="text/javascript" src="./javascript/test.js"></script>
+        <h1>Database Search</h1>
+        
+        <form action="/datasearch" method="POST">
+            <div class="ui input">
+                <input id="test" type="text" placeholder="NDB_No (primary search)" name="NDB_No" >
+            </div>
+            <div class="ui input">
+                <input type="text" placeholder="Name" name="Shrt_Desc">
+            </div>
+            <input class="ui green button" type="submit" value="Submit">
+        </form>
+
+        <div class="ui horizontal divider">Or</div>
+
+        <a class="ui button blue" href="/">Go back to the landing page</a>
+
+        <!-- User scripts -->
+        <script type="text/javascript" src="./javascript/test.js"></script>
 
 <% include ./partials/footer %>

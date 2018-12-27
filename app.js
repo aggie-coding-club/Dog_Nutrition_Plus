@@ -27,34 +27,8 @@ app.set('view engine', 'ejs');
 
 mongoose.connect("mongodb://" + monConnect.username + ":" + monConnect.pass + "@ds055545.mlab.com:55545/dog-nutrition-plus");
 
-var obj = {
-    Title: null
-};
-
 app.get("/", function(req, res){
-    res.render('landing', obj);
-});
-
-app.get("/query", function(req, res){
-    
-    res.json(obj);
-});
-
-app.post("/query", function(req, res){
-    var query = data_src.find({ DataSrc_ID: "D3318" });
-
-    if(req.body.firstname == ""){
-        console.log("The value was null");
-    }
-    query.exec(function (err, docs) {
-        if (err) {
-            console.log(err);
-        } else {
-            obj = docs[0];
-        }
-    });
-
-    res.redirect("/query");
+    res.render('landing');
 });
 
 app.get("/datasearch", function(req, res){
