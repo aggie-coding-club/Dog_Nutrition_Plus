@@ -61,7 +61,7 @@ app.get("/datasearch", function(req, res){
     res.render('datasearch.ejs');
 });
 
-app.get("/datasearch/NBD/:id", function(req, res){
+app.get("/datasearch/NDB/:id", function(req, res){
     if (req.params.id != "") {
         var query = food_des.find({ NDB_No: req.params.id.toString() });
         query.exec(function (err, docs) {
@@ -108,6 +108,7 @@ app.get("/datasearch/desc/:name", function(req, res){
                 return countA - countB;
 
             });
+            docs = docs.slice(0, 15);
             res.render("dataresults", {docs: docs});
         } else{
             res.render("datasearch");
@@ -116,10 +117,10 @@ app.get("/datasearch/desc/:name", function(req, res){
 });
 
 app.post("/datasearch", function(req, res){
-    var nbdInfo = req.body.NBD_No;
+    var nbdInfo = req.body.NDB_No;
     var shrtName = req.body.Shrt_Desc;
     if(nbdInfo != ""){
-        var rstring = "/datasearch/NBD/" + nbdInfo;
+        var rstring = "/datasearch/NDB/" + nbdInfo;
         res.redirect(rstring);
     } else {
         var rstring = "/datasearch/desc/" + shrtName;
