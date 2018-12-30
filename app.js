@@ -53,41 +53,107 @@ app.get("/datasearch/NDB/:id", function(req, res){
 });
 
 app.get("/datasearch/desc/:name", function(req, res){
-    var shrtname = req.params.name;
-    var query = food_des.find({ "Shrt_Desc": { "$regex": shrtname, "$options": "$i"}});
-    query.exec(function(err, docs){
-        if(err){
+    // var names = req.params.name.split(" ");    
+    // var matched = [];
+    // names.forEach(shrtname => {
+    //     var query = food_des.find({ "Shrt_Desc": { "$regex": shrtname, "$options": "$i" } });
+    //     query.exec(function (err, docs) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else if (docs.length != 0 && matched.length == 0){                
+    //             docs.forEach(doc => {
+    //                 matched.push(doc.NDB_No);
+    //             });
+    //         } else if(docs.length != 0 && matched.length != 0){
+    //             matched.forEach(num => {
+    //                 docs.forEach(doc => {
+    //                     if(doc.NDB_No == num){
+    //                         console.log("Match");
+    //                     }
+    //                 })
+    //             })
+    //         } else {                
+    //             res.render("datasearch");
+    //         }
+    //     });
+        
+    // });  
+    // console.log(matched);
+
+    var shrtname = req.params.name;  
+    var query = food_des.find({ "Shrt_Desc": { "$regex": shrtname, "$options": "$i" } });
+    query.exec(function (err, docs) {
+        if (err) {
             console.log(err);
-        } else if(docs.length != 0){
-            docs.sort(function(a, b){
+        } else if (docs.length != 0) {
+            docs.sort(function (a, b) {
                 var countA = 0;
                 var countB = 0;
-                for (var i = 0; i < a.Shrt_Desc.length - shrtname.length; i++){
-                    if (a.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()){
+                for (var i = 0; i < a.Shrt_Desc.length - shrtname.length; i++) {
+                    if (a.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
                         countA++;
-                    } else{
+                    } else {
                         break;
                     }
                 }
                 for (var i = 0; i < b.Shrt_Desc.length - shrtname.length; i++) {
                     if (b.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
                         countB++;
-                    } else{
+                    } else {
                         break;
                     }
                 }
-                if(countA == countB){
+                if (countA == countB) {
                     return a - b;
                 }
                 return countA - countB;
-
             });
-            docs = docs.slice(0, 15);
             res.render("dataresults", {docs: docs});
+        } else {
+            res.render("datasearch");
+        }
+    });
+     
+     
+    // matched.sort(function (a, b) {
+    //     var countA = 0;
+    //     var countB = 0;
+    //     for (var i = 0; i < a.Shrt_Desc.length - shrtname.length; i++) {
+    //         if (a.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
+    //             countA++;
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //     for (var i = 0; i < b.Shrt_Desc.length - shrtname.length; i++) {
+    //         if (b.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
+    //             countB++;
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //     if (countA == countB) {
+    //         return a - b;
+    //     }
+    //     return countA - countB;
+    // }); 
+    // res.render("dataresults", {docs: matched});
+});
+
+app.get("/datasearch/NDB/:id/NDF", function(req, res){
+    var NDB_No = req.params.id;
+    var query = nut_data.find({NDB_No: NDB_No});
+    query.exec(function(err, docs){
+        if(err){
+            console.log(err);
+        } else if(docs.length != 0){
+            console.log(docs);
+            res.render("NDFshow", {docs: docs});
         } else{
             res.render("datasearch");
         }
     });
+
 });
 
 app.post("/datasearch", function(req, res){
