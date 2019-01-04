@@ -80,8 +80,8 @@ app.get("/datasearch/desc/:name", function(req, res){
     // });  
     // console.log(matched);
 
-    var shrtname = req.params.name;  
-    var query = food_des.find({ "Shrt_Desc": { "$regex": shrtname, "$options": "$i" } });
+    var longName = req.params.name;  
+    var query = food_des.find({ "Long_Desc": { "$regex": longName, "$options": "$i" } });
     query.exec(function (err, docs) {
         if (err) {
             console.log(err);
@@ -89,15 +89,15 @@ app.get("/datasearch/desc/:name", function(req, res){
             docs.sort(function (a, b) {
                 var countA = 0;
                 var countB = 0;
-                for (var i = 0; i < a.Shrt_Desc.length - shrtname.length; i++) {
-                    if (a.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
+                for (var i = 0; i < a.Long_Desc.length - longName.length; i++) {
+                    if (a.Long_Desc.substring(i, i + longName.length).toUpperCase() != longName.toUpperCase()) {
                         countA++;
                     } else {
                         break;
                     }
                 }
-                for (var i = 0; i < b.Shrt_Desc.length - shrtname.length; i++) {
-                    if (b.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
+                for (var i = 0; i < b.Long_Desc.length - longName.length; i++) {
+                    if (b.Long_Desc.substring(i, i + longName.length).toUpperCase() != longName.toUpperCase()) {
                         countB++;
                     } else {
                         break;

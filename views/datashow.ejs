@@ -1,6 +1,6 @@
 <% include ./partials/header %>
 
-    <h1><%= Shrt_Desc %></h1>
+    <h1><%= Long_Desc %></h1>
 
     <div class="ui four column grid">
         <div class="row">
@@ -10,8 +10,8 @@
             <div class="column">FdGrp_Cd: 
                 <%= FdGrp_Cd %>
             </div>
-            <div class="column">Long_Desc: 
-                <%= Long_Desc %>
+            <div class="column">Shrt_Desc: 
+                <%= Shrt_Desc %>
             </div>
             <div class="column">ComName: 
                 <%= ComName %>
@@ -54,6 +54,7 @@
 
     <div class="ui divider"></div>
     
+    <a class="ui button orange" href="javascript:history.back()">Previous Page</a>
     <a class="ui button blue" href="/datasearch">Click this to go back to the database search page</a>
     
 <% include ./partials/footer %>
