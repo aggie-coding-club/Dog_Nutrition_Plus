@@ -36,13 +36,41 @@ app.get("/datasearch", function(req, res){
 });
 
 app.get("/datasearch/NDB/:id", function(req, res){
+    // Pulls the NDB number from the request
     if (req.params.id != "") {
         var query = food_des.find({ NDB_No: req.params.id.toString() });
         query.exec(function (err, docs) {
             if (err) {
                 console.log(err);
             } else if(docs.length != 0){
-                res.render("datashow.ejs", docs[0]);
+    // Creates a new query to find the food group information
+                var FDquery = fd_group.find({ FdGrp_Cd: docs[0].FdGrp_Cd });
+                FDquery.exec(function (err, FDdocs){
+                    if(err){
+                        console.log(err);
+                    } else if( FDdocs.length != 0){
+                        docs[0].FdGrp_Desc = FDdocs[0].FdGrp_Desc;  
+    // Finds all of the nutrient data associated with a food (if any)
+                        var NDquery = nut_data.find({ NDB_No: req.params.id });
+                        NDquery.exec(function (err, NDdocs){
+                            if(err){
+                                console.log(err);
+                            } else if(NDdocs.length != 0){
+                                docs[0].nutData = [];
+                                NDdocs.forEach(obj => {
+                                    docs[0].nutData.push(obj);
+                                });
+                                res.render("datashow.ejs", docs[0]);
+                            } else{
+                                res.render("datashow.ejs", docs[0]);
+
+                            }
+                        })
+                    } else{
+                        res.redirect("/datasearch");
+                    }
+                });
+                
 
             } else{
                 res.redirect("/datasearch");
@@ -86,6 +114,7 @@ app.get("/datasearch/desc/:name", function(req, res){
         if (err) {
             console.log(err);
         } else if (docs.length != 0) {
+            // Created a custom sort function that finds the searched word earliest in the string.
             docs.sort(function (a, b) {
                 var countA = 0;
                 var countB = 0;

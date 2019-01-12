@@ -53,6 +53,21 @@
     </div>
 
     <div class="ui divider"></div>
+
+    <h2>From fd_group:</h2>
+    <div><strong>Food Description: </strong><%= FdGrp_Desc %></div>
+
+    <div class="ui divider"></div>
+
+    <h2>From nut_data:</h2>
+    <h3>Nutr_No - Nutr_Val:</h3>
+    <div class="ui four column grid ">
+        <% nutData.forEach(function(item){ %>
+            <div class="column"><%= item.Nutr_No %> - <%= item.Nutr_Val %></div>
+        <% }); %>
+    </div>
+
+    <div class="ui divider"></div>
     
     <a class="ui button orange" href="javascript:history.back()">Previous Page</a>
     <a class="ui button blue" href="/datasearch">Click this to go back to the database search page</a>

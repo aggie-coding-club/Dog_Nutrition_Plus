@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const nut_data = new Schema({
-    NDB_No: { type: String, Required: 'There must be an id PRIMARY KEY' },
+    NDB_No: { type: String, Required: 'There must be an id' },
     Nutr_No: { type: String, Required: true},
     Nutr_Val: { type: String, Required: true},
     Num_Data_Pts: { type: Number, Required: true},
