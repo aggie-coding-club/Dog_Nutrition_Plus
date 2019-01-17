@@ -66,6 +66,7 @@ app.get("/datasearch/NDB/:id", function(req, res){
 
                             }
                         })
+                        // res.render("datashow.ejs", docs[0]);
                     } else{
                         res.redirect("/datasearch");
                     }
