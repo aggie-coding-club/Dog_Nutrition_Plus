@@ -5,6 +5,11 @@ var bodyParser = require("body-parser"),
     monConnect = require("./config.js"),
     app = express();
 
+// Okta packages
+var createError = require('http-errors');
+var logger = require('morgan');
+var session = require("express-session");
+
 // Import mongooose models
 var data_src_link = require('./models/data_src_link.js'),
     data_src = require('./models/data_src.js'),
@@ -51,34 +56,32 @@ app.get("/datasearch/NDB/:id", function(req, res){
                     } else if( FDdocs.length != 0){
                         docs[0].FdGrp_Desc = FDdocs[0].FdGrp_Desc;  
     // Finds all of the nutrient data associated with a food (if any)
-                        var NDquery = nut_data.find({ NDB_No: req.params.id });
-                        NDquery.exec(function (err, NDdocs){
-                            if(err){
-                                console.log(err);
-                            } else if(NDdocs.length != 0){
-                                docs[0].nutData = [];
-                                NDdocs.forEach(obj => {
-                                    docs[0].nutData.push(obj);
-                                });
-                                res.render("datashow.ejs", docs[0]);
-                            } else{
-                                res.render("datashow.ejs", docs[0]);
-
-                            }
-                        })
-                        // res.render("datashow.ejs", docs[0]);
-                    } else{
-                        res.redirect("/datasearch");
+                        // var NDquery = nut_data.find({ NDB_No: req.params.id });
+                        // NDquery.exec(function (err, NDdocs){
+                        //     if(err){
+                        //         console.log(err);
+                        //     } else if(NDdocs.length != 0){
+                        //         docs[0].nutData = [];
+                        //         NDdocs.forEach(obj => {
+                        //             docs[0].nutData.push(obj);
+                        //         });
+                        //         res.render("datashow.ejs", docs[0]);
+                        //     } else{
+                        //         res.render("datashow.ejs", docs[0]);
+                        docs[0].nutData = [0]; //Currently a placeholder until we can get the nutrition data to respond properly
+                        res.render("datashow.ejs", docs[0]);
                     }
-                });
-                
-
+                })
+                        // res.render("datashow.ejs", docs[0]);
             } else{
                 res.redirect("/datasearch");
             }
         });
-    }
+                
 
+    } else{
+        res.redirect("/datasearch");
+    }
 });
 
 app.get("/datasearch/desc/:name", function(req, res){
