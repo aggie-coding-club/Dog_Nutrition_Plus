@@ -5,11 +5,6 @@ var bodyParser = require("body-parser"),
     monConnect = require("./config.js"),
     app = express();
 
-// Okta packages
-var createError = require('http-errors');
-var logger = require('morgan');
-var session = require("express-session");
-
 // Import mongooose models
 var data_src_link = require('./models/data_src_link.js'),
     data_src = require('./models/data_src.js'),
