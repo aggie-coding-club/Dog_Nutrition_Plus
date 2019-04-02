@@ -6,10 +6,21 @@ var ds = require('./datasearch');
 var router = express.Router();
 
 // Datasearch routes
-router.route('/datasearch').get(ds.getrender());
-router.route('/datasearch/NDB/:id').get(ds.getNBD());
-router.route('/datasearch/desc/:name').get(ds.getName());
-router.route('/datasearch/NDB/:id/NDF').get(ds.getNDF());
-router.route('/datasearch').post(ds.dspost());
+router.get('/datasearch', function(req, res){
+    // ds.getrender(req, res);
+    res.render('./datasearch.ejs');
+} );
+router.get('/datasearch/NDB/:id', function(req, res){
+    ds.getNBD(req, res);
+} );
+router.get('/datasearch/desc/:name', function(req, res){
+    ds.getName(req, res);
+} );
+router.get('/datasearch/NDB/:id/NDF', function(req, res){
+    ds.getNDF(req, res);
+} );
+router.post('/datasearch', function(req, res){
+    ds.dspost(req, res);
+} );
 
 module.exports = router;

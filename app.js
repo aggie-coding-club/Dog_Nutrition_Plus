@@ -34,6 +34,13 @@ app.get("/", function(req, res){
     res.render('landing');
 });
 
+app.get("/datasearch", routes);
+app.get("/datasearch/NDB/:id", routes);
+app.get("/datasearch/desc/:name", routes);
+app.get("/datasearch/NDB/:id/NDF", routes);
+app.post("/datasearch", routes);
+
+
 
 var PORT = 4000;
 app.listen(PORT, function(req, res){
