@@ -25,7 +25,11 @@ module.exports = {
     if (req.params.id != '') {
       // var query = food_des.find({ NDB_No: req.params.id.toString() });
       db.query("SELECT * FROM food_des WHERE NDB_No = '" + req.params.id + "'", function(err, result){
-        console.log(result);
+        if(result.length == 0){
+          res.redirect('/datasearch');
+        } else{
+          db.query("SELECT * FROM fd_group WHERE NDB_No = ")
+        }
       });
       res.redirect('/datasearch');
       // query.exec(function (err, docs) {
