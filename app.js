@@ -1,9 +1,12 @@
 var bodyParser = require("body-parser"),
-    mongoose = require("mongoose"),
+    // mongoose = require("mongoose"),
     express = require("express"),
     path = require("path"),
-    monConnect = require("./config.js"),
+    // monConnect = require("./config.js"),
+    mysql = require('mysql'),
     app = express();
+
+var db = require('./db.js');
 
 var routes = require('./routes');
 app.use('/api', routes);
@@ -28,7 +31,8 @@ app.use(bodyParser.json());
 app.use(express.static('views'));
 app.set('view engine', 'ejs');
 
-mongoose.connect("mongodb://" + monConnect.username + ":" + monConnect.pass + "@ds055545.mlab.com:55545/dog-nutrition-plus");
+// mongoose.connect("mongodb://" + monConnect.username + ":" + monConnect.pass + "@ds055545.mlab.com:55545/dog-nutrition-plus");
+
 
 app.get("/", function(req, res){
     res.render('landing');
