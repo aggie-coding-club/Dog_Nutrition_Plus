@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'password',
-    database: 'nutrition_db_local'
+    database: 'data'
 });
 
 connection.connect(function (err) {

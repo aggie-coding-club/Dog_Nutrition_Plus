@@ -15,6 +15,58 @@ var data_src_link = require('./models/data_src_link.js'),
 
 var db = require('./db.js');
 
+// PROMISE TESTING
+function basePromise(req, res){
+  return new Promise(function (resolve, reject) {
+    db.query("SELECT * FROM food_des WHERE NDB_No = '" + req.params.id + "'", function (err, result) {
+      if (result.length == 0 || err) {
+        reject(err);
+      } else {
+        resolve(result[0]);
+      }
+    });
+  });
+}
+
+
+function FdGrp_CdPromise(mainObj){
+  return new Promise(function (resolve, reject) {
+    db.query("SELECT * FROM fd_group WHERE FdGrp_Cd = '" + mainObj.FdGrp_Cd + "'", function (err, FDresult) {
+      if (err || FDresult.length == 0) {
+        reject(err);
+      } else {
+        resolve(FDresult[0]);
+      }
+    });
+  });
+}
+
+function NDPromise(mainObj){
+  return new Promise(function (resolve, reject) {
+    db.query("SELECT * FROM nut_data WHERE NDB_No = '" + mainObj.NDB_No + "'", function (err, result) {
+      if (err || result.length == 0) {
+        reject("");
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
+function nutFindPromise(mainObj) {
+  return new Promise(function (resolve, reject) {
+    for(var i = 0; i < mainObj.length; i++){
+      db.query("SELECT * FROM nutr_def WHERE Nutr_No = '" + mainObj[i].Nutr_No + "'", function (err, result) {
+        if (err || result.length == 0) {
+          console.log(err)
+        } else {
+          resolve(result);
+        }
+      });
+    }
+  });
+}
+
 module.exports = {
   getrender: function (req, res) {
     res.render('datasearch.ejs');
@@ -24,14 +76,25 @@ module.exports = {
     // Pulls the NDB number from the request
     if (req.params.id != '') {
       // var query = food_des.find({ NDB_No: req.params.id.toString() });
-      db.query("SELECT * FROM food_des WHERE NDB_No = '" + req.params.id + "'", function(err, result){
-        if(result.length == 0){
-          res.redirect('/datasearch');
-        } else{
-          db.query("SELECT * FROM fd_group WHERE NDB_No = ")
-        }
+
+      // Finds the central object by calling the base promise
+      var baseP = basePromise(req, res);
+      baseP.then(function(result){
+        // Calls the FDPromise to get the food description.
+        var FDPromise = FdGrp_CdPromise(result);
+        FDPromise.then(function(FDresult){
+          result.FdGrp_Desc = FDresult.FdGrp_Desc;
+          var NDP = NDPromise(result);
+          NDP.then(function(NDResult){
+            result.nutrients = NDResult;
+            // console.log(result);
+            res.render('datashow.ejs', result);
+          });
+          // console.log(result);
+          // res.render('datashow.ejs', result);
+        });
       });
-      res.redirect('/datasearch');
+      // res.redirect('/datasearch');
       // query.exec(function (err, docs) {
       //   if (err) {
       //     console.log(err);
