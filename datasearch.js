@@ -1,18 +1,3 @@
-var express = require('express');
-
-var data_src_link = require('./models/data_src_link.js'),
-  data_src = require('./models/data_src.js'),
-  deriv_cd = require('./models/deriv_cd.js'),
-  fd_group = require('./models/fd_group.js'),
-  food_des = require('./models/food_des.js'),
-  footnote = require('./models/footnote.js'),
-  langdesc = require('./models/langdesc.js'),
-  langual = require('./models/langual.js'),
-  nut_data = require('./models/nut_data.js'),
-  nutr_def = require('./models/nutr_def.js'),
-  src_cd = require('./models/src_cd.js'),
-  weight = require('./models/weight.js');
-
 var db = require('./db.js');
 
 // PROMISE TESTING
@@ -52,6 +37,7 @@ function NDPromise(mainObj){
   });
 }
 
+// UNUSED (plan to populate nut_data ids with their acutal descriptions)
 function nutFindPromise(mainObj) {
   return new Promise(function (resolve, reject) {
     for(var i = 0; i < mainObj.length; i++){
@@ -68,15 +54,15 @@ function nutFindPromise(mainObj) {
 
 // EXPORTED FUNCTIONS
 module.exports = {
+  // Query page (directs to post)
   getrender: function (req, res) {
     res.render('datasearch.ejs');
   },
 
+  // Show page (primary)
   getNBD: function (req, res) {
-    // Pulls the NDB number from the request
+    // Pulls the NDB number from the request using req.params.id
     if (req.params.id != '') {
-      // var query = food_des.find({ NDB_No: req.params.id.toString() });
-
       // Finds the central object by calling the base promise
       var baseP = basePromise(req, res);
       baseP.then(function(result){
@@ -84,14 +70,13 @@ module.exports = {
         var FDPromise = FdGrp_CdPromise(result);
         FDPromise.then(function(FDresult){
           result.FdGrp_Desc = FDresult.FdGrp_Desc;
+          // Calls NDPromise to get the nutritional data
           var NDP = NDPromise(result);
           NDP.then(function(NDResult){
             result.nutrients = NDResult;
-            // console.log(result);
+            // Loads datashow.ejs with the combined results
             res.render('datashow.ejs', result);
           });
-          // console.log(result);
-          // res.render('datashow.ejs', result);
         });
       });
     } else {
@@ -99,6 +84,7 @@ module.exports = {
     }
   },
 
+  // Results page (For a list of pages)
   getName: function (req, res) {
     var longName = req.params.name;
     db.query("SELECT * FROM food_des WHERE (Long_Desc LIKE '%" + longName + "%')", function(err, result){
@@ -141,8 +127,11 @@ module.exports = {
     });
   },
 
+  // Extra Show page for Nutritional information
+  // An additional but unnecessary function (NOT LINKED IN PROJECT)
   getNDF: function (req, res) {
     var NDB_No = req.params.id;
+    // Pulls only the nutritional data vs. the main show page
     db.query("SELECT * FROM nut_data WHERE NDB_No= '" + NDB_No + "'", function(err, result){
       if (err) {
         console.log(err);
@@ -154,6 +143,7 @@ module.exports = {
     });
   },
 
+  // Post route (accepts queries)
   dspost: function (req, res) {
     var nbdInfo = req.body.NDB_No;
     var shrtName = req.body.Shrt_Desc;
