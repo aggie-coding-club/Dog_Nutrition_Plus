@@ -7,24 +7,23 @@ var router = express.Router();
 
 // Datasearch routes
 
-// Query page
+// Query page (directs to post)
 router.get('/datasearch', function(req, res){
-    // ds.getrender(req, res);
-    res.render('./datasearch.ejs');
+    ds.getrender(req, res);
 } );
-// Show page
+// Show page (primary)
 router.get('/datasearch/NDB/:id', function(req, res){
     ds.getNBD(req, res);
 } );
-// Results page
+// Results page (For a list of pages)
 router.get('/datasearch/desc/:name', function(req, res){
     ds.getName(req, res);
 } );
-// Extra Show page
+// Extra Show page for Nutritional information
 router.get('/datasearch/NDB/:id/NDF', function(req, res){
     ds.getNDF(req, res);
 } );
-// Post route
+// Post route (accepts queries)
 router.post('/datasearch', function(req, res){
     ds.dspost(req, res);
 } );
