@@ -40,15 +40,15 @@ function NDPromise(mainObj){
 // UNUSED (plan to populate nut_data ids with their acutal descriptions)
 function nutFindPromise(mainObj) {
   return new Promise(function (resolve, reject) {
-    for(var i = 0; i < mainObj.length; i++){
-      db.query("SELECT * FROM nutr_def WHERE Nutr_No = '" + mainObj[i].Nutr_No + "'", function (err, result) {
-        if (err || result.length == 0) {
-          console.log(err)
-        } else {
-          resolve(result);
-        }
-      });
-    }
+    db.query("SELECT * FROM nutr_def WHERE Nutr_No = '" + mainObj.Nutr_No + "'", function (err, result) {
+      if (err || result.length == 0) {
+        console.log(err);
+        reject(err);
+      } else {
+        console.log(result[0]);
+        resolve(result[0]);        
+      }
+    });
   });
 }
 
@@ -74,8 +74,14 @@ module.exports = {
           var NDP = NDPromise(result);
           NDP.then(function(NDResult){
             result.nutrients = NDResult;
+            var NFPromise = nutFindPromise(NDResult[0]);
+            NFPromise.then(function(NFResult){
+              // console.log(NFResult);
+              res.render('datashow.ejs', result);
+
+            })
             // Loads datashow.ejs with the combined results
-            res.render('datashow.ejs', result);
+            // res.render('datashow.ejs', result);
           });
         });
       });
