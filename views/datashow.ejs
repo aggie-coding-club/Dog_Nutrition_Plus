@@ -25,7 +25,7 @@
                 <%= Survey %>
             </div>
             <div class="column">Ref_desc:
-                <%= Ref_desc %>
+                <%= Ref_Desc %>
             </div>
             <div class="column">Refuse:
                 <%= Refuse %>
@@ -60,11 +60,14 @@
     <div class="ui divider"></div>
 
     <h2>From nut_data:</h2>
-    <h3>Nutr_No - Nutr_Val:</h3>
+    <h3>NutrDesc - Nutr_Val:</h3>
     <div class="ui four column grid ">
-        <!-- <% nutData.forEach(function(item){ %>
-            <div class="column"><%= item.Nutr_No %> - <%= item.Nutr_Val %></div>
-        <% }); %> -->
+        <% if(nutrients[0] != "") %>
+        <% nutrients.forEach(function(item){ %>
+            <% if(item.Nutr_Val != 0){ %>
+                <div class="column"><%= item.NutrDesc %> - <%= item.Nutr_Val %> per 100 grams</div>
+            <% } %>
+        <% }); %>
     </div>
 
     <div class="ui divider"></div>

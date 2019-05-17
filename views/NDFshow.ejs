@@ -6,6 +6,16 @@
             <h1>
                 <%= docs[0].NDB_No %>:
             </h1>
+            <div class="ui four column grid ">
+                <% if(docs[0] != "") %>
+                <% docs.forEach(function(item){ %>
+                <div class="column">
+                    <%= item.Nutr_No %> -
+                    <%= item.Nutr_Val %>
+                </div>
+                <% }); %>
+            </div>
+
         </div>
     </div>
     
