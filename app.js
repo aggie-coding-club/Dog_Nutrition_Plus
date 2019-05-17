@@ -26,6 +26,13 @@ app.get("/datasearch/desc/:name", routes);
 app.get("/datasearch/NDB/:id/NDF", routes);
 app.post("/datasearch", routes);
 
+app.get('/diet', routes);
+app.get('/dietlist', routes);
+app.get('/diet/:id', routes);
+app.post('/diet', routes);
+
+
+
 
 
 var PORT = 4000;

@@ -2,6 +2,7 @@ var express = require('express');
 
 // All routes here
 var ds = require('./datasearch');
+var diet = require('./diet');
 
 var router = express.Router();
 
@@ -27,5 +28,24 @@ router.get('/datasearch/NDB/:id/NDF', function(req, res){
 router.post('/datasearch', function(req, res){
     ds.dspost(req, res);
 } );
+
+// Diet routes
+
+// Input page
+router.get('/diet', function(req, res){
+    diet.dietLanding(req, res);
+});
+// List page
+router.get('/dietlist', function (req, res) {
+
+});
+// Show page
+router.get('/diet/:id', function (req, res) {
+
+});
+// Post route
+router.post('/diet', function (req, res) {
+
+});
 
 module.exports = router;

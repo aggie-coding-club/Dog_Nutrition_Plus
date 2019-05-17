@@ -1,55 +1,58 @@
 var db = require('./db.js');
 
-// PROMISE TESTING
-function basePromise(req, res){
-  return new Promise(function (resolve, reject) {
-    db.query("SELECT * FROM food_des WHERE NDB_No = '" + req.params.id + "'", function (err, result) {
-      if (result.length == 0 || err) {
-        reject(err);
-      } else {
-        resolve(result[0]);
-      }
-    });
+// Callback Function Testing
+function mainCall(mainID, callback) {
+  db.query("SELECT * FROM food_des WHERE NDB_No = '" + mainID + "'", function (err, result) {
+    if (result.length == 0 || err) {
+      console.log("Error in mainCall:" + err);
+    } else {
+      callback(result[0]);
+    }
   });
 }
 
-function FdGrp_CdPromise(mainObj){
-  return new Promise(function (resolve, reject) {
-    db.query("SELECT * FROM fd_group WHERE FdGrp_Cd = '" + mainObj.FdGrp_Cd + "'", function (err, FDresult) {
-      if (err || FDresult.length == 0) {
-        reject(err);
-      } else {
-        resolve(FDresult[0]);
-      }
-    });
+function FdGrp_CdCall(fgID, callback) {
+  db.query("SELECT * FROM fd_group WHERE FdGrp_Cd = '" + fgID + "'", function (err, FDresult) {
+    if (err || FDresult.length == 0) {
+      console.log("Error in FdGrp_CdCall: " + err);
+    } else {
+      callback(FDresult[0]);
+    }
   });
 }
 
-function NDPromise(mainObj){
-  return new Promise(function (resolve, reject) {
-    db.query("SELECT * FROM nut_data WHERE NDB_No = '" + mainObj.NDB_No + "'", function (err, result) {
-      if (err || result.length == 0) {
-        reject("");
-      } else {
-        resolve(result);
-      }
-    });
+function NDCall(mainID, callback) {
+  db.query("SELECT * FROM nut_data WHERE NDB_No = '" + mainID + "'", function (err, result) {
+    if (err || result.length == 0) {
+      console.log("Error in NDCall: " + err);
+    } else {
+      let nameArr = [];
+      nutFindCall(result, function (output, cont) {
+        nameArr.push(output);
+        if (cont) {
+          callback(nameArr, result);
+        }
+      });
+    }
   });
 }
 
 // UNUSED (plan to populate nut_data ids with their acutal descriptions)
-function nutFindPromise(mainObj) {
-  return new Promise(function (resolve, reject) {
-    db.query("SELECT * FROM nutr_def WHERE Nutr_No = '" + mainObj.Nutr_No + "'", function (err, result) {
+function nutFindCall(mainObjs, callback) {
+  for (let i = 0; i < mainObjs.length; i++) {
+    db.query("SELECT NutrDesc FROM nutr_def WHERE Nutr_No = '" + mainObjs[i].Nutr_No + "'", function (err, result) {
       if (err || result.length == 0) {
-        console.log(err);
-        reject(err);
+        console.log("Error in nutFindCall: " + err);
       } else {
-        console.log(result[0]);
-        resolve(result[0]);        
+        // console.log(result);
+        if (i < mainObjs.length - 1) {
+          callback(result[0], false);
+        } else {
+          callback(result[0], true);
+        }
       }
     });
-  });
+  }
 }
 
 // EXPORTED FUNCTIONS
@@ -63,25 +66,19 @@ module.exports = {
   getNBD: function (req, res) {
     // Pulls the NDB number from the request using req.params.id
     if (req.params.id != '') {
-      // Finds the central object by calling the base promise
-      var baseP = basePromise(req, res);
-      baseP.then(function(result){
-        // Calls the FDPromise to get the food description.
-        var FDPromise = FdGrp_CdPromise(result);
-        FDPromise.then(function(FDresult){
-          result.FdGrp_Desc = FDresult.FdGrp_Desc;
-          // Calls NDPromise to get the nutritional data
-          var NDP = NDPromise(result);
-          NDP.then(function(NDResult){
-            result.nutrients = NDResult;
-            var NFPromise = nutFindPromise(NDResult[0]);
-            NFPromise.then(function(NFResult){
-              // console.log(NFResult);
-              res.render('datashow.ejs', result);
-
-            })
-            // Loads datashow.ejs with the combined results
-            // res.render('datashow.ejs', result);
+      mainCall(req.params.id, function (output) {
+        FdGrp_CdCall(output.FdGrp_Cd, function (fGroup) {
+          output.FdGrp_Desc = fGroup.FdGrp_Desc;
+          NDCall(req.params.id, function (names, totalObj) {
+            output.nutrients = [];
+            names.forEach(obj => {
+              output.nutrients.push({ NutrDesc: obj.NutrDesc});
+            });
+            for(var i = 0; i < output.nutrients.length; i++){
+              output.nutrients[i].Nutr_Val = totalObj[i].Nutr_Val;
+            }
+            console.log(output);
+            res.render("datashow.ejs", output);
           });
         });
       });
@@ -93,7 +90,7 @@ module.exports = {
   // Results page (For a list of pages)
   getName: function (req, res) {
     var longName = req.params.name;
-    db.query("SELECT * FROM food_des WHERE (Long_Desc LIKE '%" + longName + "%')", function(err, result){
+    db.query("SELECT * FROM food_des WHERE (Long_Desc LIKE '%" + longName + "%')", function (err, result) {
       if (err) {
         console.log(err);
       } else if (result.length != 0) {
@@ -138,7 +135,7 @@ module.exports = {
   getNDF: function (req, res) {
     var NDB_No = req.params.id;
     // Pulls only the nutritional data vs. the main show page
-    db.query("SELECT * FROM nut_data WHERE NDB_No= '" + NDB_No + "'", function(err, result){
+    db.query("SELECT * FROM nut_data WHERE NDB_No= '" + NDB_No + "'", function (err, result) {
       if (err) {
         console.log(err);
       } else if (result.length != 0) {
