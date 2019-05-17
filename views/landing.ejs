@@ -1,24 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>This is an ejs page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
-</head>
-<body>
-    <h1>This landing page is working properly</h1>
-    <div><%= Title %></div>
+<% include ./partials/header %>
 
-    <form action="/query" method="POST">
-        <h1>First name</h1>
-        <input type="text" name="firstname">
-        <h1>Last name</h1>
-        <input type="text" name="lastname">
-        <input type="submit" value="Send">
-    </form>
+    <h1>Welcome! The landing page is working properly!</h1>
+    <div class="ui list">
+        <div class="item">
+            <a class="ui button big red" href="/datasearch">Database Search</a>
+        </div>
+        <div class="item">
+            <a class="ui button big purple" href="/diet">Diet Creation</a>
+        </div>
+    </div>
+
+    <div class="ui horizontal divider">Quick Links</div>
+
+    <div class="ui list">
+        <div class="item">
+            <a class="ui mini button blue" href="https://trello.com/b/FCpWiNRq/dog-nutrition">Trello Page</a>
+        </div>
+        <div class="item">
+            <a class="ui mini button black" href="https://github.com/aggie-coding-club/Dog_Nutrition_Plus">Github Repository Page</a>
+        </div>
+    </div>
+
     
-</body>
-</html>
+<% include ./partials/header %>

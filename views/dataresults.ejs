@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Data Results</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <% docs.forEach(function(item){ %>
-        <div>This is <%= item.Shrt_Desc %></div>
+<% include ./partials/header %>
+
+    <% result.forEach(function(item){ %>
+        <div>
+            <div><%= item.Long_Desc %></div>
+            <a class="ui button blue small" href="/datasearch/NDB/<%= item.NDB_No %>">Details</a>
+        </div>
+        <div class="ui divider"></div>
     <% }); %>
     
-</body>
-</html>
+    <a href="/datasearch" class="ui button orange">Go back to search</a>
+
+<% include ./partials/footer %>

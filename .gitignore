@@ -79,5 +79,8 @@ typings/
 # Prevents transfer of config file
 config.js
 
+# testing .txt
+test.txt
+
 
 # End of https://www.gitignore.io/api/node

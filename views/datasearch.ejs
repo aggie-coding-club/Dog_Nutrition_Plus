@@ -1,32 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Database Search</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-    
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<% include ./partials/header %>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+        <h1>Database Search</h1>
+        
+        <form action="/datasearch" method="POST">
+            <div class="ui input">
+                <input id="test" type="text" placeholder="NDB_No (primary search)" name="NDB_No" >
+            </div>
+            <div class="ui input">
+                <input type="text" placeholder="Name" name="Shrt_Desc">
+            </div>
+            <input class="ui green button" type="submit" value="Submit">
+        </form>
 
+        <div class="ui horizontal divider">Or</div>
 
-</head>
-<body>
-    
-    <form action="/datasearch" method="POST">
-        <div class="ui input">
-            <input id="test" type="text" placeholder="NBD_No" name="NBD_No" >
-        </div>
-        <div class="ui input">
-            <input type="text" placeholder="Name" name="Shrt_Desc">
-        </div>
-        <input class="ui green button" type="submit" value="Submit">
-    </form>
+        <a class="ui button blue" href="/">Go back to the landing page</a>
 
-    <!-- User scripts -->
-    <script type="text/javascript" src="./javascript/test.js"></script>
+        <!-- User scripts -->
+        <script type="text/javascript" src="./javascript/test.js"></script>
 
-</body>
-</html>
+<% include ./partials/footer %>
