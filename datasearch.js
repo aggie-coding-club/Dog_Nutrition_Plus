@@ -1,103 +1,101 @@
-var express = require('express');
+var db = require('./db.js');
 
-var data_src_link = require('./models/data_src_link.js'),
-  data_src = require('./models/data_src.js'),
-  deriv_cd = require('./models/deriv_cd.js'),
-  fd_group = require('./models/fd_group.js'),
-  food_des = require('./models/food_des.js'),
-  footnote = require('./models/footnote.js'),
-  langdesc = require('./models/langdesc.js'),
-  langual = require('./models/langual.js'),
-  nut_data = require('./models/nut_data.js'),
-  nutr_def = require('./models/nutr_def.js'),
-  src_cd = require('./models/src_cd.js'),
-  weight = require('./models/weight.js');
+// Callback Function Testing
+function mainCall(mainID, callback) {
+  db.query("SELECT * FROM food_des WHERE NDB_No = '" + mainID + "'", function (err, result) {
+    if (result.length == 0 || err) {
+      console.log("Error in mainCall:" + err);
+    } else {
+      callback(result[0]);
+    }
+  });
+}
 
+function FdGrp_CdCall(fgID, callback) {
+  db.query("SELECT * FROM fd_group WHERE FdGrp_Cd = '" + fgID + "'", function (err, FDresult) {
+    if (err || FDresult.length == 0) {
+      console.log("Error in FdGrp_CdCall: " + err);
+    } else {
+      callback(FDresult[0]);
+    }
+  });
+}
+
+function NDCall(mainID, callback) {
+  db.query("SELECT * FROM nut_data WHERE NDB_No = '" + mainID + "'", function (err, result) {
+    if (err || result.length == 0) {
+      console.log("Error in NDCall: " + err);
+    } else {
+      let nameArr = [];
+      nutFindCall(result, function (output, cont) {
+        nameArr.push(output);
+        if (cont) {
+          callback(nameArr, result);
+        }
+      });
+    }
+  });
+}
+
+// UNUSED (plan to populate nut_data ids with their acutal descriptions)
+function nutFindCall(mainObjs, callback) {
+  for (let i = 0; i < mainObjs.length; i++) {
+    db.query("SELECT NutrDesc FROM nutr_def WHERE Nutr_No = '" + mainObjs[i].Nutr_No + "'", function (err, result) {
+      if (err || result.length == 0) {
+        console.log("Error in nutFindCall: " + err);
+      } else {
+        // console.log(result);
+        if (i < mainObjs.length - 1) {
+          callback(result[0], false);
+        } else {
+          callback(result[0], true);
+        }
+      }
+    });
+  }
+}
+
+// EXPORTED FUNCTIONS
 module.exports = {
+  // Query page (directs to post)
   getrender: function (req, res) {
     res.render('datasearch.ejs');
   },
 
+  // Show page (primary)
   getNBD: function (req, res) {
-    // Pulls the NDB number from the request
+    // Pulls the NDB number from the request using req.params.id
     if (req.params.id != '') {
-      var query = food_des.find({ NDB_No: req.params.id.toString() });
-      query.exec(function (err, docs) {
-        if (err) {
-          console.log(err);
-        } else if (docs.length != 0) {
-          // Creates a new query to find the food group information
-          var FDquery = fd_group.find({ FdGrp_Cd: docs[0].FdGrp_Cd })
-          FDquery.exec(function (err, FDdocs) {
-            if (err) {
-              console.log(err);
-            } else if (FDdocs.length != 0) {
-              docs[0].FdGrp_Desc = FDdocs[0].FdGrp_Desc;
-              // Finds all of the nutrient data associated with a food (if any)
-              // var NDquery = nut_data.find({ NDB_No: req.params.id });
-              // NDquery.exec(function (err, NDdocs){
-              //     if(err){
-              //         console.log(err);
-              //     } else if(NDdocs.length != 0){
-              //         docs[0].nutData = [];
-              //         NDdocs.forEach(obj => {
-              //             docs[0].nutData.push(obj);
-              //         });
-              //         res.render("datashow.ejs", docs[0]);
-              //     } else{
-              //         res.render("datashow.ejs", docs[0]);
-              docs[0].nutData = [0]; // Currently a placeholder until we can get the nutrition data to respond properly
-              res.render('datashow.ejs', docs[0]);
+      mainCall(req.params.id, function (output) {
+        FdGrp_CdCall(output.FdGrp_Cd, function (fGroup) {
+          output.FdGrp_Desc = fGroup.FdGrp_Desc;
+          NDCall(req.params.id, function (names, totalObj) {
+            output.nutrients = [];
+            names.forEach(obj => {
+              output.nutrients.push({ NutrDesc: obj.NutrDesc});
+            });
+            for(var i = 0; i < output.nutrients.length; i++){
+              output.nutrients[i].Nutr_Val = totalObj[i].Nutr_Val;
             }
-          })
-          // res.render("datashow.ejs", docs[0]);
-        } else {
-          res.redirect('/datasearch');
-        }
-      })
+            console.log(output);
+            res.render("datashow.ejs", output);
+          });
+        });
+      });
     } else {
       res.redirect('/datasearch');
     }
   },
 
+  // Results page (For a list of pages)
   getName: function (req, res) {
-    // var names = req.params.name.split(" ");
-    // var matched = [];
-    // names.forEach(shrtname => {
-    //     var query = food_des.find({ "Shrt_Desc": { "$regex": shrtname, "$options": "$i" } });
-    //     query.exec(function (err, docs) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else if (docs.length != 0 && matched.length == 0){
-    //             docs.forEach(doc => {
-    //                 matched.push(doc.NDB_No);
-    //             });
-    //         } else if(docs.length != 0 && matched.length != 0){
-    //             matched.forEach(num => {
-    //                 docs.forEach(doc => {
-    //                     if(doc.NDB_No == num){
-    //                         console.log("Match");
-    //                     }
-    //                 })
-    //             })
-    //         } else {
-    //             res.render("datasearch");
-    //         }
-    //     });
-
-    // });
-    // console.log(matched);
-
     var longName = req.params.name;
-    var query = food_des.find({
-      Long_Desc: { $regex: longName, $options: '$i' }
-    });
-    query.exec(function (err, docs) {
+    db.query("SELECT * FROM food_des WHERE (Long_Desc LIKE '%" + longName + "%')", function (err, result) {
       if (err) {
         console.log(err);
-      } else if (docs.length != 0) {
+      } else if (result.length != 0) {
         // Created a custom sort function that finds the searched word earliest in the string.
-        docs.sort(function (a, b) {
+        result.sort(function (a, b) {
           var countA = 0;
           var countB = 0;
           for (var i = 0; i < a.Long_Desc.length - longName.length; i++) {
@@ -125,52 +123,30 @@ module.exports = {
           }
           return countA - countB;
         })
-        res.render('dataresults', { docs: docs });
+        res.render('dataresults', { result: result });
       } else {
         res.render('datasearch');
       }
-    })
-
-    // matched.sort(function (a, b) {
-    //     var countA = 0;
-    //     var countB = 0;
-    //     for (var i = 0; i < a.Shrt_Desc.length - shrtname.length; i++) {
-    //         if (a.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
-    //             countA++;
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    //     for (var i = 0; i < b.Shrt_Desc.length - shrtname.length; i++) {
-    //         if (b.Shrt_Desc.substring(i, i + shrtname.length).toUpperCase() != shrtname.toUpperCase()) {
-    //             countB++;
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    //     if (countA == countB) {
-    //         return a - b;
-    //     }
-    //     return countA - countB;
-    // });
-    // res.render("dataresults", {docs: matched});
+    });
   },
 
+  // Extra Show page for Nutritional information
+  // An additional but unnecessary function (NOT LINKED IN PROJECT)
   getNDF: function (req, res) {
     var NDB_No = req.params.id;
-    var query = nut_data.find({ NDB_No: NDB_No });
-    query.exec(function (err, docs) {
+    // Pulls only the nutritional data vs. the main show page
+    db.query("SELECT * FROM nut_data WHERE NDB_No= '" + NDB_No + "'", function (err, result) {
       if (err) {
         console.log(err);
-      } else if (docs.length != 0) {
-        console.log(docs);
-        res.render('NDFshow', { docs: docs });
+      } else if (result.length != 0) {
+        res.render('NDFshow', { docs: result });
       } else {
         res.render('datasearch');
       }
-    })
+    });
   },
 
+  // Post route (accepts queries)
   dspost: function (req, res) {
     var nbdInfo = req.body.NDB_No;
     var shrtName = req.body.Shrt_Desc;
