@@ -1,57 +1,5 @@
 var db = require('./db.js');
 
-// PROMISE TESTING
-// function basePromise(req, res){
-//   return new Promise(function (resolve, reject) {
-//     db.query("SELECT * FROM food_des WHERE NDB_No = '" + req.params.id + "'", function (err, result) {
-//       if (result.length == 0 || err) {
-//         reject(err);
-//       } else {
-//         resolve(result[0]);
-//       }
-//     });
-//   });
-// }
-
-// function FdGrp_CdPromise(mainObj){
-//   return new Promise(function (resolve, reject) {
-//     db.query("SELECT * FROM fd_group WHERE FdGrp_Cd = '" + mainObj.FdGrp_Cd + "'", function (err, FDresult) {
-//       if (err || FDresult.length == 0) {
-//         reject(err);
-//       } else {
-//         resolve(FDresult[0]);
-//       }
-//     });
-//   });
-// }
-
-// function NDPromise(mainObj){
-//   return new Promise(function (resolve, reject) {
-//     db.query("SELECT * FROM nut_data WHERE NDB_No = '" + mainObj.NDB_No + "'", function (err, result) {
-//       if (err || result.length == 0) {
-//         reject("");
-//       } else {
-//         resolve(result);
-//       }
-//     });
-//   });
-// }
-
-// // UNUSED (plan to populate nut_data ids with their acutal descriptions)
-// function nutFindPromise(mainObj, callback) {
-
-//   for (let i = 0; i < mainObj.length; i++) {
-//     db.query("SELECT NutrDesc FROM nutr_def WHERE Nutr_No = '" + mainObj[i].Nutr_No + "'", function (err, result) {
-//       if (err || result.length == 0) {
-//         console.log(err);
-//       } else {
-//         // console.log(result);
-//         callback(result[0]);
-//       }
-//     });
-//   }
-// }
-
 // Callback Function Testing
 function mainCall(mainID, callback) {
   db.query("SELECT * FROM food_des WHERE NDB_No = '" + mainID + "'", function (err, result) {
@@ -119,12 +67,9 @@ module.exports = {
     // Pulls the NDB number from the request using req.params.id
     if (req.params.id != '') {
       mainCall(req.params.id, function (output) {
-        // console.log(output);
         FdGrp_CdCall(output.FdGrp_Cd, function (fGroup) {
-          // console.log(fGroup);
           output.FdGrp_Desc = fGroup.FdGrp_Desc;
           NDCall(req.params.id, function (names, totalObj) {
-            // console.log(names);
             output.nutrients = [];
             names.forEach(obj => {
               output.nutrients.push({ NutrDesc: obj.NutrDesc});
@@ -137,43 +82,6 @@ module.exports = {
           });
         });
       });
-
-
-
-
-
-      // Finds the central object by calling the base promise
-      // var baseP = basePromise(req, res);
-      // baseP.then(function(result){
-      //   // Calls the FDPromise to get the food description.
-      //   var FDPromise = FdGrp_CdPromise(result);
-      //   FDPromise.then(function(FDresult){
-      //     result.FdGrp_Desc = FDresult.FdGrp_Desc;
-      //     // Calls NDPromise to get the nutritional data
-      //     var NDP = NDPromise(result);
-      //     NDP.then(function(NDResult){
-      //       result.nutrients = NDResult;
-      //       // console.log(result.nutrients);
-      //       result.names = [];
-      //       nutFindPromise(NDResult, function (output) {
-      //         console.log(output);
-      //         result.names.push(output);
-      //       })
-
-      // for(var i = 0; i < NDResult.length; i++){
-      //   nutFindPromise(NDResult[i]).then(result => {
-
-      //   })
-      // }
-
-      // NFPromise.then(function(NFResult){
-      //   res.render('datashow.ejs', result);
-      // });
-      // Loads datashow.ejs with the combined results
-      // res.render('datashow.ejs', result);
-      //     });
-      //   });
-      // });
     } else {
       res.redirect('/datasearch');
     }
