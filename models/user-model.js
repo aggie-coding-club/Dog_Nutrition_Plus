@@ -1,8 +1,9 @@
-import { Schema } from "mongoose";
+const mongoose = require('mongoose');
 
-var User = new Schema({
+var User = new mongoose.Schema({
     name: String,
+    googleId: String,
     diets: [String]
 });
 
-module.exports = User;
+module.exports = mongoose.model('User', User);

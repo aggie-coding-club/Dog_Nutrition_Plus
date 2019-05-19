@@ -2,11 +2,35 @@ var bodyParser = require("body-parser"),
     express = require("express"),
     path = require("path"),
     mysql = require('mysql'),
+    mongoose = require('mongoose'),
+    keys = require('./keys'),
+    cookieSession = require('cookie-session'),
+    passport = require('passport');
     app = express();
 
-var db = require('./db.js');
+mongoose.connect(keys.mongoKeys.userInfo.dbURI, () => {
+    console.log("Connected to mongoDB user-info");
+});
 
+const passportSetup = require('./config/passport-setup');
+
+var sqlDb = require('./db.js');
+
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [keys.session.cookieKey]
+}));
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Setting up routes (part 1)
 var routes = require('./routes');
+const authRoutes = require('./routes/auth-routes');
+const profileRoutes = require('./routes/profile-routes');
+app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
 app.use('/api', routes);
 
 // Set up express usage
