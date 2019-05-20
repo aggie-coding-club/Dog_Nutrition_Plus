@@ -78,6 +78,7 @@ module.exports = {
               output.nutrients[i].Nutr_Val = totalObj[i].Nutr_Val;
             }
             console.log(output);
+            output.user = req.user;
             res.render("datashow.ejs", output);
           });
         });
@@ -123,7 +124,10 @@ module.exports = {
           }
           return countA - countB;
         })
-        res.render('dataresults', { result: result });
+        res.render('dataresults', { 
+          result: result,
+          user: req.user
+        });
       } else {
         res.render('datasearch');
       }

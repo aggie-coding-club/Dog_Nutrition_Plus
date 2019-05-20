@@ -29,8 +29,11 @@ app.use(passport.session());
 var routes = require('./routes');
 const authRoutes = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
+const cartRoutes = require('./routes/cart-routes');
+
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
+app.use('/cart', cartRoutes);
 app.use('/api', routes);
 
 // Set up express usage

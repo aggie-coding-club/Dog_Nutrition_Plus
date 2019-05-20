@@ -4,6 +4,11 @@
         <div>
             <div><%= item.Long_Desc %></div>
             <a class="ui button blue small" href="/datasearch/NDB/<%= item.NDB_No %>">Details</a>
+
+            <% if(user){ %>
+            <a class="ui button green small" href="/cart/add/<%= item.NDB_No %>">Add to cart</a>
+            <% } %>
+
         </div>
         <div class="ui divider"></div>
     <% }); %>

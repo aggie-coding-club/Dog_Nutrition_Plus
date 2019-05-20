@@ -1,0 +1,19 @@
+<% include ../partials/header %>
+
+<h1>This is the cart page!</h1>
+
+<h3>Here are the items:</h3>
+
+<% if(foodItems !== null){ %>
+<% for(var i = 0; i < foodNames.length; i++){ %>
+<div>
+    <h5><%= foodNames[i] %></h5>
+    <form>
+        <a href="cart/delete/<%= foodItems[i].id %>" class="ui button red">Delete</a>
+    </form>
+</div>
+<% } %>
+<a class="ui button blue" href="/diet/create"></a>
+<% } %>
+
+<% include ../partials/footer %>
