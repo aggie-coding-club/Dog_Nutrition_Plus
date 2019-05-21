@@ -30,8 +30,10 @@ var routes = require('./routes');
 const authRoutes = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
 const cartRoutes = require('./routes/cart-routes');
+const dietRoutes = require('./routes/diet-routes');
 
 app.use('/auth', authRoutes);
+app.use('/diet', dietRoutes);
 app.use('/profile', profileRoutes);
 app.use('/cart', cartRoutes);
 app.use('/api', routes);
@@ -43,7 +45,7 @@ app.use(express.static('views'));
 app.set('view engine', 'ejs');
 
 app.get("/", function(req, res){
-    res.render('landing');
+    res.render('landing', { req: req });
 });
 
 // Renders routes from the routes.js file

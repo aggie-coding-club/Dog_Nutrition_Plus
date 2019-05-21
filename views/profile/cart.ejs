@@ -7,13 +7,14 @@
 <% if(foodItems !== null){ %>
 <% for(var i = 0; i < foodNames.length; i++){ %>
 <div>
-    <h5><%= foodNames[i] %></h5>
-    <form>
-        <a href="cart/delete/<%= foodItems[i].id %>" class="ui button red">Delete</a>
-    </form>
+    <%= foodNames[i] %> <a href="cart/delete/<%= foodItems[i].id %>" class="ui button red">Delete</a>
 </div>
 <% } %>
-<a class="ui button blue" href="/diet/create"></a>
+<a class="ui button green" href="/diet/create">Create a diet</a>
 <% } %>
+
+<div>
+    <a href="/" class="ui button small blue">Go back to landing page</a>
+</div>
 
 <% include ../partials/footer %>
