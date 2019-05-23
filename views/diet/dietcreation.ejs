@@ -2,15 +2,40 @@
 
 <h1>Diet Creation</h1>
 
-<form>
+<% for(let i = 0; i < foodObjects.length; i++){ %>
+<div class="special" onclick="test()">
+    <a class="ui card" href="#">
+        <div class="content">
+            <div class="header"><%= foodNames[i] %></div>
+            <div class="meta">
+                <span class="category"></span>
+            </div>
+            <div class="description">
+                <div class="ui mini input">
+                    Quantity: <input placeholder="0" onchange="test(i)" id="<%= i %>inp" type="number" min="0">
+                </div>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="right floated author">
+                <img class="ui avatar image" src="<%= user.picture %>"> <%= user.name %>
+            </div>
+        </div>
+    </a>
+</div>
+<% } %>
+
+<!-- <form>
     <div class="ui input">
         <input type="text">
     </div>
     <a class="ui button yellow">Submit</a>
-</form>
+</form> -->
 
 <div>
     <a class="ui button blue" href="/">Back to landing page</a>
 </div>
+
+<script type="text/javascript" src="../scripts/dietcreationlive.js"></script>
 
 <% include ../partials/footer %>

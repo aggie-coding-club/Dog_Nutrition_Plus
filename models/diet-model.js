@@ -6,7 +6,8 @@ var Diet = new mongoose.Schema({
         Amount: Number
     }],
     userId: String,
-    dietName: String
+    dietName: String,
+    dogIds: [String]
 });
 
 module.exports = mongoose.model('Diet', Diet);

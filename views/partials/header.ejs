@@ -28,10 +28,12 @@
         </a>
         <div class="right menu">
             <div class="item">
-                <div class="ui icon input">
-                    <input type="text" placeholder="Search...">
-                    <i class="search link icon"></i>
-                </div>
+                <form action="/datasearch" method="POST">
+                    <div class="ui icon input">
+                        <input name="Shrt_Desc" type="text" placeholder="Search...">
+                        <i type="submit" class="search link icon"></i>
+                    </div>
+                </form>     
             </div>
             <a class="ui item" href="/auth/login">
                 Login

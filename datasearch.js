@@ -152,14 +152,15 @@ module.exports = {
 
   // Post route (accepts queries)
   dspost: function (req, res) {
-    var nbdInfo = req.body.NDB_No;
     var shrtName = req.body.Shrt_Desc;
-    if (nbdInfo != '') {
-      var rstring = '/datasearch/NDB/' + nbdInfo;
-      res.redirect(rstring);
-    } else {
-      var rstring = '/datasearch/desc/' + shrtName;
-      res.redirect(rstring);
-    }
+    var rstring = '/datasearch/desc/' + shrtName;
+    res.redirect(rstring);
+    // if (nbdInfo != '') {
+    //   var rstring = '/datasearch/NDB/' + nbdInfo;
+    //   res.redirect(rstring);
+    // } else {
+    //   var rstring = '/datasearch/desc/' + shrtName;
+    //   res.redirect(rstring);
+    // }
   }
 }

@@ -21,12 +21,12 @@ passport.use(
         clientSecret: googleKey.clientSecret
     }, (accessToken, refreshToken, profile, done) => {
         // Callback function for authentication
-        console.log(profile);
         User.findOne({ googleId: profile.id }, (err, user) => {
             if(err || !user){
                 new User({
                     name: profile.displayName,
-                    googleId: profile.id
+                    googleId: profile.id,
+                    picture: profile.photos[0].value
                 }).save().then((newUser) => {
                     console.log('New user created: ' + newUser);
                     done(null, newUser);
