@@ -8,8 +8,8 @@ var bodyParser = require("body-parser"),
     passport = require('passport');
     app = express();
 
-mongoose.connect(keys.mongoKeys.userInfo.dbURI, () => {
-    console.log("Connected to mongoDB user-info");
+mongoose.connect(keys.mongoKeys.userInfo.dbURI, { useNewUrlParser: true }, () => {
+    console.log("Connected to mongoDB");
 });
 
 const passportSetup = require('./config/passport-setup');
@@ -25,6 +25,16 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Set up express usage
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('views'));
+app.set('view engine', 'ejs');
+
+app.get("/", function(req, res){
+    res.render('landing', { req: req });
+});
+
 // Setting up routes (part 1)
 var routes = require('./routes');
 const authRoutes = require('./routes/auth-routes');
@@ -37,16 +47,6 @@ app.use('/diet', dietRoutes);
 app.use('/profile', profileRoutes);
 app.use('/cart', cartRoutes);
 app.use('/api', routes);
-
-// Set up express usage
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(express.static('views'));
-app.set('view engine', 'ejs');
-
-app.get("/", function(req, res){
-    res.render('landing', { req: req });
-});
 
 // Renders routes from the routes.js file
 app.get("/datasearch", routes);

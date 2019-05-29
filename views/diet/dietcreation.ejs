@@ -1,29 +1,33 @@
 <% include ../partials/header %>
+<!-- <link rel="stylesheet" href="../stylesheets/dietcreation.css"> -->
 
 <h1>Diet Creation</h1>
 
-<% for(let i = 0; i < foodObjects.length; i++){ %>
-<div class="special" onclick="test()">
-    <a class="ui card" href="#">
-        <div class="content">
-            <div class="header"><%= foodNames[i] %></div>
-            <div class="meta">
-                <span class="category"></span>
-            </div>
-            <div class="description">
-                <div class="ui mini input">
-                    Quantity: <input placeholder="0" onchange="test(i)" id="<%= i %>inp" type="number" min="0">
+<div class="ui grid">
+    <div class="eight wide column">
+        <div id="statusSheet">
+            <h3>Status Sheet</h3>
+        </div>
+    </div>
+    <div class="eight wide column">
+        <div class="ui grid">
+            <% for(let i = 0; i < foodObjects.length; i++){ %>
+            <div class="eight wide column">
+                <div class="food">
+                    <h5><%= foodNames[i] %></h5>
+                    <div class="ui input">
+                        <input class="amountInputs" type="number" value="<%= foodObjects[i].food.Amount %>" min="0">
+                    </div>
                 </div>
             </div>
+            <% } %>
         </div>
-        <div class="extra content">
-            <div class="right floated author">
-                <img class="ui avatar image" src="<%= user.picture %>"> <%= user.name %>
-            </div>
-        </div>
-    </a>
+    </div>
+
+
 </div>
-<% } %>
+
+
 
 <!-- <form>
     <div class="ui input">
