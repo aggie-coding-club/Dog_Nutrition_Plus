@@ -39,32 +39,32 @@ router.get('/create', userCheck, function (req, res) {
 
 //AJAX ROUTES
 
-router.get('/getFoodIds', userCheck, function(req, res){
-    Cart.find({ userId: req.user.id }, function(err, results){
-        if(err){
-            throw err;
-        } else if(results.length < 1){
-            console.log("There aren't any items in the cart");
-        } else{
-            let retval = [];
-            for(let i = 0; i < results.length; i++){
-                retval.push(results[i].id);
-            }
-            res.send(retval);
-        }
-    })
-})
+// router.get('/getFoodIds', userCheck, function(req, res){
+//     Cart.find({ userId: req.user.id }, function(err, results){
+//         if(err){
+//             throw err;
+//         } else if(results.length < 1){
+//             console.log("There aren't any items in the cart");
+//         } else{
+//             let retval = [];
+//             for(let i = 0; i < results.length; i++){
+//                 retval.push(results[i].id);
+//             }
+//             res.send(retval);
+//         }
+//     })
+// })
 
-router.post('/update', userCheck, function (req, res) {
-    let cartIds = req.body.cartIds;
-    let amounts = req.body.amounts;
-    console.log(amounts[0]);
-    for (let i = 0; i < cartIds.length; i++) {
-        Cart.updateOne({ _id: cartIds[i] }, { 'food.Amount': amounts[i] }, function(err, numUpdates){
-            // console.log(numUpdates);
-        });
+// router.post('/update', userCheck, function (req, res) {
+//     let cartIds = req.body.cartIds;
+//     let amounts = req.body.amounts;
+//     console.log(amounts[0]);
+//     for (let i = 0; i < cartIds.length; i++) {
+//         Cart.updateOne({ _id: cartIds[i] }, { 'food.Amount': amounts[i] }, function(err, numUpdates){
+//             // console.log(numUpdates);
+//         });
 
-    }
-});
+//     }
+// });
 
 module.exports = router;

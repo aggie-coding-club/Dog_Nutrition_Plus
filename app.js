@@ -41,8 +41,10 @@ const authRoutes = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
 const cartRoutes = require('./routes/cart-routes');
 const dietRoutes = require('./routes/diet-routes');
+const calcRoutes = require('./routes/calc-routes');
 
 app.use('/auth', authRoutes);
+app.use('/calculate', calcRoutes);
 app.use('/diet', dietRoutes);
 app.use('/profile', profileRoutes);
 app.use('/cart', cartRoutes);

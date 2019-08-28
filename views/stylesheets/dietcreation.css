@@ -1,24 +1,27 @@
-.food{
+#infoScreen{
+    width: 80%;
+    margin: 10px 10%;
+    padding: 0 20px;
+    height: 400px;
+    border-radius: 10px;
+    background: rgba(63, 103, 163, 0.205);
+}
+
+#title{
     text-align: center;
-    background: lightgrey;
-    border-radius: 15px;
 }
 
-#statusSheet{
-    background: lightgrey;
-    margin-right: 40px;
-    height: 1000px;
-    margin-bottom: 20px;
+.daySpace{
     text-align: center;
-    border-radius: 15px;
+    font-weight: bold;
+    height: 150px;
+    background: rgba(136, 13, 115, 0.466);
+    border-radius: 5px;
+    margin: 20px auto;
+    margin-bottom: 40px;
+    display: inline-block;
 }
 
-.amountInputs{
-    width: 70px;
-    height: 20px;
-}
-
-#topbar{
-    /* margin-top: 0;
-    padding-top: 0; */
+#dayHolder{
+    text-align: center;
 }

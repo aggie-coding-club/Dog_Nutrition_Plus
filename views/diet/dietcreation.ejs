@@ -1,40 +1,35 @@
 <% include ../partials/header %>
 <!-- <link rel="stylesheet" href="../stylesheets/dietcreation.css"> -->
 
-<h1>Diet Creation</h1>
+<h1 id="title">Diet Creation</h1>
 
-<div class="ui grid">
-    <div class="eight wide column">
-        <div id="statusSheet">
-            <h3>Status Sheet</h3>
-        </div>
-    </div>
-    <div class="eight wide column">
-        <div class="ui grid">
-            <% for(let i = 0; i < foodObjects.length; i++){ %>
-            <div class="eight wide column">
-                <div class="food">
-                    <h5><%= foodNames[i] %></h5>
-                    <div class="ui input">
-                        <input class="amountInputs" type="number" value="<%= foodObjects[i].food.Amount %>" min="0">
-                    </div>
-                </div>
-            </div>
-            <% } %>
-        </div>
-    </div>
-
-
+<div id="infoScreen">
+    <span id="targetGroup">Defined name</span>
 </div>
 
-
-
-<!-- <form>
-    <div class="ui input">
-        <input type="text">
+<div class="ui grid" id="dayHolder">
+    <div class="two wide column daySpace">
+        Day 1
     </div>
-    <a class="ui button yellow">Submit</a>
-</form> -->
+    <div class="two wide column daySpace">
+        Day 2
+    </div>
+    <div class="two wide column daySpace">
+        Day 3
+    </div>
+    <div class="two wide column daySpace">
+        Day 4
+    </div>
+    <div class="two wide column daySpace">
+        Day 5
+    </div>
+    <div class="two wide column daySpace">
+        Day 6
+    </div>
+    <div class="two wide column daySpace">
+        Day 7
+    </div>
+</div>
 
 <div>
     <a class="ui button blue" href="/">Back to landing page</a>
